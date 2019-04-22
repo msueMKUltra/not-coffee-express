@@ -1,12 +1,19 @@
+const mongoose = require("mongoose");
 const express = require("express");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const config = require("config");
 const debug = require("debug")("app:startup");
+const customers = require("./routes/customers");
 const devices = require("./routes/devices");
 const home = require("./routes/home");
 const logger = require("./middleware/logger");
 const app = express();
+
+mongoose
+  .connect("mongodb://localhost/playground", { useNewUrlParser: true })
+  .then(() => debug("Connected to MongoDB..."))
+  .catch(() => debug("Could not connect to MongoDB..."));
 
 app.set("view engine", "pug");
 app.set("views", "./views");
@@ -19,6 +26,7 @@ if (app.get("env") === "development") {
   app.use(morgan("tiny"));
   debug(`${app.get("env")} - Morgan enabled...`);
 }
+app.use("/api/customers", customers);
 app.use("/api/devices", devices);
 app.use("/", home);
 app.use(logger);
