@@ -6,6 +6,7 @@ const config = require("config");
 const debug = require("debug")("app:startup");
 const customers = require("./routes/customers");
 const devices = require("./routes/devices");
+const movies = require("./routes/movies");
 const home = require("./routes/home");
 const logger = require("./middleware/logger");
 const app = express();
@@ -28,6 +29,7 @@ if (app.get("env") === "development") {
 }
 app.use("/api/customers", customers);
 app.use("/api/devices", devices);
+app.use("/api/movies", movies);
 app.use("/", home);
 app.use(logger);
 
