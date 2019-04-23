@@ -4,9 +4,10 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const config = require("config");
 const debug = require("debug")("app:startup");
+const genres = require("./routes/genres");
 const customers = require("./routes/customers");
-const devices = require("./routes/devices");
 const movies = require("./routes/movies");
+const rentals = require("./routes/rentals");
 const home = require("./routes/home");
 const logger = require("./middleware/logger");
 const app = express();
@@ -27,9 +28,10 @@ if (app.get("env") === "development") {
   app.use(morgan("tiny"));
   debug(`${app.get("env")} - Morgan enabled...`);
 }
+app.use("/api/genres", genres);
 app.use("/api/customers", customers);
-app.use("/api/devices", devices);
 app.use("/api/movies", movies);
+app.use("/api/rentals", rentals);
 app.use("/", home);
 app.use(logger);
 
